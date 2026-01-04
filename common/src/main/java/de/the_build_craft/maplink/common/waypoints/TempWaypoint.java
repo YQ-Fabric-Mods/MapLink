@@ -39,7 +39,7 @@ public abstract class TempWaypoint extends Waypoint {
     private WaypointState waypointState;
 
     public TempWaypoint(int x, int y, int z, String name, int color, String id, WaypointState waypointState) {
-        super(x, y, z, name, id,
+        super(x, y, z, CharsetUtils.encodeForXaero(name), id,
                 #if MC_VER == MC_1_17_1
                 color, 0, true);
                 #else
