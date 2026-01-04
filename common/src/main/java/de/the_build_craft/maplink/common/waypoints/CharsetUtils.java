@@ -41,6 +41,15 @@ public class CharsetUtils {
      * Converts a UTF-8 string to a format that Xaero's Map can correctly interpret.
      * This method re-encodes the string to work around Xaero's charset handling bug.
      * 
+     * The problem: Xaero's Map treats incoming UTF-8 strings as if they're in the
+     * system's default charset (e.g., GBK on Chinese systems), causing CJK characters
+     * to display as gibberish.
+     * 
+     * The solution: We encode the UTF-8 string's bytes as ISO-8859-1 (Latin-1).
+     * When Xaero interprets this ISO-8859-1 string back to bytes and then displays
+     * it using the system charset, the bytes will be correct UTF-8 bytes, which will
+     * then be properly rendered.
+     * 
      * @param name The original UTF-8 string
      * @return The re-encoded string that Xaero can correctly display
      */
@@ -50,9 +59,9 @@ public class CharsetUtils {
         }
         
         try {
-            // Re-encode UTF-8 bytes as ISO-8859-1 to work around Xaero's charset bug
-            // When Xaero treats this as the system charset (e.g., GBK) and converts back,
-            // it will correctly display the original UTF-8 characters
+            // Get UTF-8 bytes from the string and reinterpret them as ISO-8859-1
+            // This preserves the byte sequence while creating a new string that
+            // Xaero can convert back to the correct UTF-8 bytes
             byte[] utf8Bytes = name.getBytes(StandardCharsets.UTF_8);
             return new String(utf8Bytes, StandardCharsets.ISO_8859_1);
         } catch (Exception e) {
