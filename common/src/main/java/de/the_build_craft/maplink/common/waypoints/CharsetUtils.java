@@ -20,7 +20,6 @@
 
 package de.the_build_craft.maplink.common.waypoints;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
